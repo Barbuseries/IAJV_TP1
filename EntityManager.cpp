@@ -39,3 +39,15 @@ void EntityManager::RegisterEntity(BaseGameEntity* NewEntity)
 {
   m_EntityMap.insert(std::make_pair(NewEntity->ID(), NewEntity));
 }
+
+std::vector<int> EntityManager::GetAllEntitiesAtLocation(location_type location) {
+	std::vector<int> result;
+
+	for (auto it = m_EntityMap.begin(); it != m_EntityMap.end(); ++it) {
+		if (it->second->Location() == location) {
+			result.push_back(it->first);
+		}
+	}
+
+	return result;
+}

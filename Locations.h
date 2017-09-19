@@ -4,6 +4,7 @@
 
 enum location_type
 {
+  in_the_middle_of_nowhere,
   shack,
   goldmine,
   bank,

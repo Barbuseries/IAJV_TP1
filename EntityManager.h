@@ -13,6 +13,9 @@
 #include <map>
 #include <cassert>
 #include <string>
+#include <vector>
+
+#include "Locations.h"
 
 
 class BaseGameEntity;
@@ -54,6 +57,8 @@ public:
 
   //this method removes the entity from the list
   void            RemoveEntity(BaseGameEntity* pEntity);
+
+  std::vector<int> GetAllEntitiesAtLocation(location_type location);
 };
 
 

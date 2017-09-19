@@ -11,6 +11,7 @@
 //------------------------------------------------------------------------
 #include <string>
 
+#include "Locations.h"
 #include "messaging/Telegram.h"
 
 
@@ -32,6 +33,9 @@ private:
   //the next valid ID
   void SetID(int val);
 
+protected:
+	location_type         m_Location;
+
 public:
 
   BaseGameEntity(int id)
@@ -49,6 +53,9 @@ public:
   virtual bool  HandleMessage(const Telegram& msg)=0;
 
   int           ID()const{return m_ID;}  
+
+  location_type Location()const { return m_Location; }
+  void          ChangeLocation(location_type loc) { m_Location = loc; }
 };
 
 

@@ -21,12 +21,6 @@ template <class entity_type> class State; //pre-fixed with "template <class enti
 
 struct Telegram;
 
-//above this value a drunkard is drunk
-const int IntoxicationThreshold = 3;
-//above this value a miner is sleepy
-//const int TirednessThreshold = 5;
-
-
 class Drunkard : public BaseGameEntity
 {
 private:
@@ -43,13 +37,18 @@ private:
 	int                   m_iFatigue;
 
 public:
+	//above this value a drunkard is drunk
+	const int IntoxicationThreshold = 5;
+	//above this value a drunkard is sleepy
+	static const int TirednessThreshold = 7;
 
-	Drunkard(int id) :m_Location(shack),
-		m_iIntoxication(0),
-		m_iFatigue(0),
-		BaseGameEntity(id)
+	Drunkard(int id) :m_iIntoxication(0),
+					  m_iFatigue(0),
+					  BaseGameEntity(id)
 
 	{
+		ChangeLocation(drunkard_shack);
+
 		//set up state machine
 		m_pStateMachine = new StateMachine<Drunkard>(this);
 
@@ -75,11 +74,13 @@ public:
 	location_type Location()const { return m_Location; }
 	void          ChangeLocation(location_type loc) { m_Location = loc; }
 
-	bool          Fatigued()const { return m_iFatigue > 5; };
+	bool          Fatigued()const { return m_iFatigue > Drunkard::TirednessThreshold; };
+	bool		  Rested() const { return m_iFatigue == 0; };
 	void          DecreaseFatigue() { m_iFatigue -= 1; }
 	void          IncreaseFatigue() { m_iFatigue += 1; }
 
-	bool		  Drunk() const { return m_iIntoxication > IntoxicationThreshold; };
+	bool		  Drunk() const { return m_iIntoxication > Drunkard::IntoxicationThreshold; };
+	void		  SoberUp() { m_iIntoxication -= (m_iIntoxication > 0) ? 1 : 0; };
 	void		  DrinkBeer() { m_iIntoxication += 1;  }
 
 };

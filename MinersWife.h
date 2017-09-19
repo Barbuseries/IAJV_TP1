@@ -30,19 +30,19 @@ private:
   //an instance of the state machine class
   StateMachine<MinersWife>* m_pStateMachine;
 
-  location_type   m_Location;
-
   //is she presently cooking?
   bool            m_bCooking;
 
 
 public:
 
-  MinersWife(int id):m_Location(shack),
-                     m_bCooking(false),
+  MinersWife(int id):m_bCooking(false),
                      BaseGameEntity(id)
                                         
   {
+	ChangeLocation(shack);
+
+
     //set up the state machine
     m_pStateMachine = new StateMachine<MinersWife>(this);
 
@@ -61,10 +61,6 @@ public:
   virtual bool  HandleMessage(const Telegram& msg);
 
   StateMachine<MinersWife>* GetFSM()const{return m_pStateMachine;}
-
-  //----------------------------------------------------accessors
-  location_type Location()const{return m_Location;}
-  void          ChangeLocation(location_type loc){m_Location=loc;}
 
   bool          Cooking()const{return m_bCooking;}
   void          SetCooking(bool val){m_bCooking = val;}

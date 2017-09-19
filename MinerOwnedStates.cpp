@@ -111,7 +111,7 @@ void VisitBankAndDepositGold::Execute(Miner* pMiner)
        << "Depositing gold. Total savings now: "<< pMiner->Wealth();
 
   //wealthy enough to have a well earned rest?
-  if (pMiner->Wealth() >= ComfortLevel)
+  if (pMiner->Wealth() >= Miner::ComfortLevel)
   {
     cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " 
          << "WooHoo! Rich enough for now. Back home to mah li'lle lady";

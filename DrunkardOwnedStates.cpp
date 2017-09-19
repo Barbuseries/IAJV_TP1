@@ -38,11 +38,12 @@ void GoHomeAndSleepTilRested2::Enter(Drunkard* pDrunkard)
 
 void GoHomeAndSleepTilRested2::Execute(Drunkard* pDrunkard)
 {
-	if (!pDrunkard->Fatigued()) {
+	if (pDrunkard->Rested()) {
 		pDrunkard->GetFSM()->ChangeState(GoToSaloonAndDrink::Instance());
 	}
 	else {
 		pDrunkard->DecreaseFatigue();
+		pDrunkard->SoberUp();
 		cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": " << "*Snoring*";
 	}
 }
@@ -91,6 +92,11 @@ void GoToSaloonAndDrink::Execute(Drunkard* pDrunkard)
 	}
 	else {
 		if (pDrunkard->Drunk()) {
+			Dispatch->DispatchMessageToLocation(SEND_MSG_IMMEDIATELY,
+				pDrunkard->ID(),
+				pDrunkard->Location(),
+				Msg_BringItOn,
+				NULL);
 			cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": " << "If ah could, I'd fight ev'ry one of ya all.. *hic*";
 		}
 	}
