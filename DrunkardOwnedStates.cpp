@@ -1,6 +1,7 @@
 #include "DrunkardOwnedStates.h"
 #include "fsm/State.h"
 #include "Drunkard.h"
+#include "DrinkTypes.h"
 #include "Locations.h"
 #include "messaging/Telegram.h"
 #include "MessageDispatcher.h"
@@ -11,6 +12,11 @@
 #include <iostream>
 using std::cout;
 
+#define ASK_FOR_BEER(delay) Dispatch->DispatchMessage(delay,\
+													  pDrunkard->ID(), \
+													  ent_Barman, \
+													  Msg_AskForDrink, \
+													  (void *)DrinkType::Beer);
 
 #ifdef TEXTOUTPUT
 #include <fstream>
@@ -77,16 +83,13 @@ void GoToSaloonAndDrink::Enter(Drunkard* pDrunkard)
 		pDrunkard->ChangeLocation(saloon);
 		cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": " << "'Tis drinkin' time people.";
 	}
+
+	ASK_FOR_BEER(SEND_MSG_IMMEDIATELY);
 }
 
 
 void GoToSaloonAndDrink::Execute(Drunkard* pDrunkard)
 {
-	pDrunkard->DrinkBeer();
-	pDrunkard->IncreaseFatigue();
-
-	cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": " << "Nothin's better than a beer!";
-
 	if (pDrunkard->Fatigued()) {
 		pDrunkard->GetFSM()->ChangeState(GoHomeAndSleepTilRested2::Instance());
 	}
@@ -112,6 +115,29 @@ void GoToSaloonAndDrink::Exit(Drunkard* pDrunkard)
 
 bool GoToSaloonAndDrink::OnMessage(Drunkard* pDrunkard, const Telegram& msg)
 {
-	//send msg to global message handler
+	SetTextColor(BACKGROUND_RED | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+
+	switch (msg.Msg)
+	{
+		case Msg_DrinkReady:
+		{
+			cout << "\nMessage received by " << GetNameOfEntity(pDrunkard->ID()) <<
+				" at time: " << Clock->GetCurrentTime();
+
+			SetTextColor(FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+			
+			pDrunkard->DrinkBeer();
+			pDrunkard->IncreaseFatigue();
+
+			cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": " << "Nothin's better than a beer!";
+
+			// It's a drunkard, after all
+			ASK_FOR_BEER(1);
+		}
+
+		return true;
+
+	}//end switch
+
 	return false;
 }

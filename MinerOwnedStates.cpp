@@ -1,6 +1,7 @@
 #include "MinerOwnedStates.h"
 #include "fsm/State.h"
 #include "Miner.h"
+#include "DrinkTypes.h"
 #include "Locations.h"
 #include "messaging/Telegram.h"
 #include "MessageDispatcher.h"
@@ -231,15 +232,16 @@ void QuenchThirst::Enter(Miner* pMiner)
 
     cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Boy, ah sure is thusty! Walking to the saloon";
   }
+
+  Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
+							pMiner->ID(),        //ID of sender
+							ent_Barman,            //ID of recipient
+							Msg_AskForDrink,   //the message
+							(void *)DrinkType::Whisky);
 }
 
 void QuenchThirst::Execute(Miner* pMiner)
 {
-  pMiner->BuyAndDrinkAWhiskey();
-
-  cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "That's mighty fine sippin' liquer";
-
-  pMiner->GetFSM()->ChangeState(EnterMineAndDigForNugget::Instance());  
 }
 
 
@@ -251,8 +253,29 @@ void QuenchThirst::Exit(Miner* pMiner)
 
 bool QuenchThirst::OnMessage(Miner* pMiner, const Telegram& msg)
 {
-  //send msg to global message handler
-  return false;
+	SetTextColor(BACKGROUND_RED | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+
+	switch (msg.Msg)
+	{
+		case Msg_DrinkReady:
+		{
+			pMiner->BuyAndDrinkAWhiskey();
+
+			cout << "\nMessage received by " << GetNameOfEntity(pMiner->ID()) <<
+				" at time: " << Clock->GetCurrentTime();
+
+			SetTextColor(FOREGROUND_RED| FOREGROUND_INTENSITY);
+			cout << "\n" << GetNameOfEntity(pMiner->ID())
+				<< ": That's mighty fine sippin' liquer";
+
+			pMiner->GetFSM()->ChangeState(EnterMineAndDigForNugget::Instance());
+		}
+
+		return true;
+
+	}//end switch
+
+	return false;
 }
 
 //------------------------------------------------------------------------EatStew

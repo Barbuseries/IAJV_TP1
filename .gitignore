@@ -75,6 +75,7 @@ artifacts/
 *.pidb
 *.svclog
 *.scc
+
 # Manually added
 *.i
 

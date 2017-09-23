@@ -38,7 +38,7 @@ private:
 
 public:
 	//above this value a drunkard is drunk
-	const int IntoxicationThreshold = 5;
+	const int IntoxicationThreshold = 3;
 	//above this value a drunkard is sleepy
 	static const int TirednessThreshold = 7;
 

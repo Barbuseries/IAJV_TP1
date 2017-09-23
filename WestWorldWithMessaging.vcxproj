@@ -131,6 +131,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Common\Time\CrudeTimer.cpp" />
+    <ClCompile Include="Barman.cpp" />
+    <ClCompile Include="BarmanOwnedStates.cpp" />
     <ClCompile Include="BaseGameEntity.cpp" />
     <ClCompile Include="Drunkard.cpp" />
     <ClCompile Include="DrunkardOwnedStates.cpp" />
@@ -152,11 +154,14 @@
     <ClInclude Include="..\..\Common\misc\utils.h" />
     <ClInclude Include="..\..\Common\Time\CrudeTimer.h" />
     <ClInclude Include="..\..\Common\utils.h" />
+    <ClInclude Include="BarmanOwnedStates.h" />
     <ClInclude Include="BaseGameEntity.h" />
+    <ClInclude Include="DrinkTypes.h" />
     <ClInclude Include="Drunkard.h" />
     <ClInclude Include="DrunkardOwnedStates.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="EntityNames.h" />
+    <ClInclude Include="Barman.h" />
     <ClInclude Include="Locations.h" />
     <ClInclude Include="MessageDispatcher.h" />
     <ClInclude Include="MessageTypes.h" />
