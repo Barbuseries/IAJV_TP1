@@ -14,7 +14,7 @@
 
 #include <thread>
 
-#define RUN_COUNT 30
+#define RUN_COUNT 10
 #define SLEEP_TIME 800
 
 using namespace std;
