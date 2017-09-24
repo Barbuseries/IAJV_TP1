@@ -8,6 +8,7 @@
 #include "MessageTypes.h"
 #include "Time/CrudeTimer.h"
 #include "EntityNames.h"
+#include "Output.h"
 
 #include <iostream>
 using std::cout;
@@ -34,7 +35,11 @@ void ServeCustomers::Enter(Barman* pBarman)
 		pBarman->ChangeLocation(saloon);
 	}
 
-	cout << "\n" << GetNameOfEntity(pBarman->ID()) << ": " << "Bar's open! Come 'n drink all ya want!";
+	{
+		Output output(pBarman->ID());
+
+		cout << "\n" << GetNameOfEntity(pBarman->ID()) << ": " << "Bar's open! Come 'n drink all ya want!";
+	}
 }
 
 
@@ -46,6 +51,8 @@ void ServeCustomers::Execute(Barman* pBarman)
 
 void ServeCustomers::Exit(Barman* pBarman)
 {
+	Output output(pBarman->ID());
+
 	cout << "\n" << GetNameOfEntity(pBarman->ID()) << ": "
 		<< "Bar's closed for now...";
 }
@@ -53,24 +60,27 @@ void ServeCustomers::Exit(Barman* pBarman)
 
 bool ServeCustomers::OnMessage(Barman* pBarman, const Telegram& msg)
 {
-	SetTextColor(BACKGROUND_RED | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-
 	switch (msg.Msg)
 	{
 		case Msg_AskForDrink:
 		{
 			int drink = (int) (msg.ExtraInfo);
 
-			cout << "\nMessage received by " << GetNameOfEntity(pBarman->ID()) <<
-				" at time: " << Clock->GetCurrentTime();
+			{
+				Output output;
 
-			SetTextColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
-			cout << "\n" << GetNameOfEntity(pBarman->ID())
-				 << ": A " << DrinkToStr(drink) << " for "
-				 << GetNameOfEntity(msg.Sender) << ". Got it!";
+				cout << "\nMessage received by " << GetNameOfEntity(pBarman->ID()) <<
+					" at time: " << Clock->GetCurrentTime();
+
+				output.ChangeEntity(pBarman->ID());
+
+				cout << "\n" << GetNameOfEntity(pBarman->ID())
+					<< ": A " << DrinkToStr(drink) << " for "
+					<< GetNameOfEntity(msg.Sender) << ". Got it!";
+			}
 
 			//let customer know the drink is ready
-			Dispatch->DispatchMessage(1,
+			Dispatch->DispatchMessage(0.2,
 				pBarman->ID(),
 				msg.Sender,
 				Msg_DrinkReady,

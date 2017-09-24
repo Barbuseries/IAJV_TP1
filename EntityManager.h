@@ -58,6 +58,8 @@ public:
   //this method removes the entity from the list
   void            RemoveEntity(BaseGameEntity* pEntity);
 
+  bool			  HasEntities() { return this->m_EntityMap.size() > 0; }
+
   std::vector<int> GetAllEntitiesAtLocation(location_type location);
 };
 

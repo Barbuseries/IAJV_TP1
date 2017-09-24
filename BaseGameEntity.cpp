@@ -1,7 +1,16 @@
 #include "BaseGameEntity.h"
+#include "EntityManager.h"
+#include "EntityNames.h"
+#include "Output.h"
 #include <cassert>
+#include <iostream>
+using std::cout;
 
-
+#ifdef TEXTOUTPUT
+#include <fstream>
+extern std::ofstream os;
+#define cout os
+#endif
 
 int BaseGameEntity::m_iNextValidID = 0;
 
@@ -22,4 +31,19 @@ void BaseGameEntity::SetID(int val)
   m_ID = val;
     
   m_iNextValidID = m_ID + 1;
+}
+
+void BaseGameEntity::Run(int count, int sleepTime) {
+	for (int i = 0; i < count; ++i) {
+		this->Update();
+		Sleep(sleepTime);
+	}
+
+	{
+		Output output;
+
+		cout << "Entity " << GetNameOfEntity(this->ID()) << " has left this world...";
+	}
+
+	EntityMgr->RemoveEntity(this);
 }

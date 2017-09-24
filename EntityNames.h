@@ -5,6 +5,8 @@
 
 enum 
 {
+  ent_Nobody,
+
   ent_Miner_Bob,
   ent_Elsa,
   ent_Drunkard_Clay,

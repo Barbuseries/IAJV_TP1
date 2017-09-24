@@ -6,65 +6,73 @@
 #include "MinersWife.h"
 #include "Drunkard.h"
 #include "Barman.h"
+
 #include "EntityManager.h"
 #include "MessageDispatcher.h"
 #include "misc/ConsoleUtils.h"
 #include "EntityNames.h"
 
+#include <thread>
 
+#define RUN_COUNT 30
+#define SLEEP_TIME 800
+
+using namespace std;
 std::ofstream os;
 
 int main()
 {
-//define this to send output to a text file (see locations.h)
+	//define this to send output to a text file (see locations.h)
 #ifdef TEXTOUTPUT
-  os.open("output.txt");
+	os.open("output.txt");
 #endif
 
-  //seed random number generator
-  srand((unsigned) time(NULL));
+	//seed random number generator
+	srand((unsigned)time(NULL));
 
-  //create a miner
-  Miner* Bob = new Miner(ent_Miner_Bob);
+	//create a miner
+	Miner* Bob = new Miner(ent_Miner_Bob);
 
-  //create his wife
-  MinersWife* Elsa = new MinersWife(ent_Elsa);
+	//create his wife
+	MinersWife* Elsa = new MinersWife(ent_Elsa);
 
-  Drunkard* Clay = new Drunkard(ent_Drunkard_Clay);
+	//create a drunkard
+	Drunkard* Clay = new Drunkard(ent_Drunkard_Clay);
 
-  Barman* barman = new Barman(ent_Barman);
+	//create _the_ barman
+	Barman* TheBarman = new Barman(ent_Barman);
 
-  //register them with the entity manager
-  EntityMgr->RegisterEntity(Bob);
-  EntityMgr->RegisterEntity(Elsa);
-  EntityMgr->RegisterEntity(Clay);
-  EntityMgr->RegisterEntity(barman);
+	//register them with the entity manager
+	EntityMgr->RegisterEntity(Bob);
+	EntityMgr->RegisterEntity(Elsa);
+	EntityMgr->RegisterEntity(Clay);
+	EntityMgr->RegisterEntity(TheBarman);
 
-  //run Bob and Elsa through a few Update calls
-  for (int i=0; i<30; ++i)
-  { 
-    Bob->Update();
-    Elsa->Update();
-	Clay->Update();
-	barman->Update();
+	thread bob(&Miner::Run, Bob, RUN_COUNT, SLEEP_TIME);
+	thread elsa(&MinersWife::Run, Elsa, RUN_COUNT, SLEEP_TIME);
+	thread clay(&Drunkard::Run, Clay, RUN_COUNT, SLEEP_TIME);
+	thread barman(&Barman::Run, TheBarman, RUN_COUNT, SLEEP_TIME);
 
-    //dispatch any delayed messages
-    Dispatch->DispatchDelayedMessages();
+	thread messages(&MessageDispatcher::Run, Dispatch, SLEEP_TIME);
 
-    Sleep(800);
-  }
+	bob.join();
+	elsa.join();
+	clay.join();
+	barman.join();
 
-  //tidy up
-  delete Bob;
-  delete Elsa;
-  delete Clay;
-  delete barman;
+	messages.join();
 
-  //wait for a keypress before exiting
-  PressAnyKeyToContinue();
+	//tidy up
+	delete Bob;
+	delete Elsa;
+	delete Clay;
+	delete TheBarman;
+
+	//wait for a keypress before exiting
+	PressAnyKeyToContinue();
 
 
-  return 0;
+	return 0;
 }
 
 

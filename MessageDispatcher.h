@@ -73,6 +73,8 @@ public:
   //send out any delayed messages. This method is called each time through   
   //the main game loop.
   void DispatchDelayedMessages();
+
+  void Run(int sleepTime);
 };
 
 

@@ -2,18 +2,18 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{e10f9a28-c30e-423f-9dfc-5c015f0fd0d9}</UniqueIdentifier>
+      <UniqueIdentifier>{a8abe373-b2ac-47a7-9cd0-eb91320840d4}</UniqueIdentifier>
       <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
     </Filter>
     <Filter Include="Header Files">
-      <UniqueIdentifier>{260164e5-bb37-4460-abed-6cb777074453}</UniqueIdentifier>
+      <UniqueIdentifier>{74980da4-337f-49b6-8b4b-0a59aed1ab17}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl</Extensions>
     </Filter>
     <Filter Include="misc">
-      <UniqueIdentifier>{246c5ce0-4079-441c-9d53-21e18d50443b}</UniqueIdentifier>
+      <UniqueIdentifier>{3c56e33a-589f-44b7-b466-d9f89a76274c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource Files">
-      <UniqueIdentifier>{44b73768-e0e2-4d98-be5a-bd30499b6ac7}</UniqueIdentifier>
+      <UniqueIdentifier>{447630bd-53f1-4de3-9faf-28ba41c8b44d}</UniqueIdentifier>
       <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
     </Filter>
   </ItemGroup>
@@ -45,16 +45,22 @@
     <ClCompile Include="..\..\Common\Time\CrudeTimer.cpp">
       <Filter>misc</Filter>
     </ClCompile>
-    <ClCompile Include="Drunkard.cpp">
+    <ClCompile Include="Color.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DrunkardOwnedStates.cpp">
+    <ClCompile Include="Output.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Barman.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BarmanOwnedStates.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DrunkardOwnedStates.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Drunkard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -116,13 +122,10 @@
     <ClInclude Include="..\..\Common\misc\utils.h">
       <Filter>misc</Filter>
     </ClInclude>
-    <ClInclude Include="StateUtils.h">
+    <ClInclude Include="Color.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Drunkard.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DrunkardOwnedStates.h">
+    <ClInclude Include="Output.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Barman.h">
@@ -132,6 +135,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DrinkTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Drunkard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DrunkardOwnedStates.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StateUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

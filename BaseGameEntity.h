@@ -10,6 +10,7 @@
 //
 //------------------------------------------------------------------------
 #include <string>
+#include <windows.h>
 
 #include "Locations.h"
 #include "messaging/Telegram.h"
@@ -47,6 +48,8 @@ public:
 
   //all entities must implement an update function
   virtual void  Update()=0;
+
+  void Run(int count, int sleepTime);
 
   //all entities can communicate using messages. They are sent
   //using the MessageDispatcher singleton class
