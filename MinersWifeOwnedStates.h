@@ -10,34 +10,128 @@
 //
 //------------------------------------------------------------------------
 #include "fsm/State.h"
-#include "StateUtils.h"
 
 class MinersWife;
 
-#define WIFE_STATE(state_name) ENTITY_STATE(state_name, MinersWife)
+
 
 //------------------------------------------------------------------------
 //
 
 //------------------------------------------------------------------------
-ENTITY_GLOBAL_STATE(WifesGlobalState, MinersWife);
+class WifesGlobalState : public State<MinersWife>
+{  
+private:
+  
+  WifesGlobalState(){}
+
+  //copy ctor and assignment should be private
+  WifesGlobalState(const WifesGlobalState&);
+  WifesGlobalState& operator=(const WifesGlobalState&);
+ 
+public:
+
+  //this is a singleton
+  static WifesGlobalState* Instance();
+  
+  virtual void Enter(MinersWife* wife){}
+
+  virtual void Execute(MinersWife* wife);
+
+  virtual void Exit(MinersWife* wife){}
+
+  virtual bool OnMessage(MinersWife* wife, const Telegram& msg);
+};
+
 
 //------------------------------------------------------------------------
 //
 
 //------------------------------------------------------------------------
-WIFE_STATE(DoHouseWork);
+class DoHouseWork : public State<MinersWife>
+{
+private:
+
+  DoHouseWork(){}
+  
+  //copy ctor and assignment should be private
+  DoHouseWork(const DoHouseWork&);
+  DoHouseWork& operator=(const DoHouseWork&);
+
+public:
+
+  //this is a singleton
+  static DoHouseWork* Instance();
+  
+  virtual void Enter(MinersWife* wife);
+
+  virtual void Execute(MinersWife* wife);
+
+  virtual void Exit(MinersWife* wife);
+  
+  virtual bool OnMessage(MinersWife* wife, const Telegram& msg);
+
+};
+
+
 
 //------------------------------------------------------------------------
 //
 
 //------------------------------------------------------------------------
-WIFE_STATE(VisitBathroom);
+class VisitBathroom : public State<MinersWife>
+{
+private:
+  
+  VisitBathroom(){}
+
+  //copy ctor and assignment should be private
+  VisitBathroom(const VisitBathroom&);
+  VisitBathroom& operator=(const VisitBathroom&);
+ 
+public:
+
+  //this is a singleton
+  static VisitBathroom* Instance();
+  
+  virtual void Enter(MinersWife* wife);
+
+  virtual void Execute(MinersWife* wife);
+
+  virtual void Exit(MinersWife* wife);
+
+  virtual bool OnMessage(MinersWife* wife, const Telegram& msg);
+
+};
+
 
 //------------------------------------------------------------------------
 //
 
 //------------------------------------------------------------------------
-WIFE_STATE(CookStew);
+class CookStew : public State<MinersWife>
+{
+private:
+  
+  CookStew(){}
+
+  //copy ctor and assignment should be private
+  CookStew(const CookStew&);
+  CookStew& operator=(const CookStew&);
+ 
+public:
+
+  //this is a singleton
+  static CookStew* Instance();
+  
+  virtual void Enter(MinersWife* wife);
+
+  virtual void Execute(MinersWife* wife);
+
+  virtual void Exit(MinersWife* wife);
+
+  virtual bool OnMessage(MinersWife* wife, const Telegram& msg);
+};
+
 
 #endif

@@ -23,12 +23,25 @@ template <class entity_type> class State; //pre-fixed with "template <class enti
 
 struct Telegram;
 
+//the amount of gold a miner must have before he feels he can go home
+const int ComfortLevel       = 5;
+//the amount of nuggets a miner can carry
+const int MaxNuggets         = 3;
+//above this value a miner is thirsty
+const int ThirstLevel        = 5;
+//above this value a miner is sleepy
+const int TirednessThreshold = 5;
+
+
+
 class Miner : public BaseGameEntity
 {
 private:
 
   //an instance of the state machine class
   StateMachine<Miner>*  m_pStateMachine;
+  
+  location_type         m_Location;
 
   //how many nuggets the miner has in his pockets
   int                   m_iGoldCarried;
@@ -43,24 +56,14 @@ private:
 
 public:
 
-	//the amount of gold a miner must have before he feels he can go home
-	static const int ComfortLevel = 5;
-	//the amount of nuggets a miner can carry
-	static const int MaxNuggets = 3;
-	//above this value a miner is thirsty
-	static const int ThirstLevel = 5;
-	//above this value a miner is sleepy
-	static const int TirednessThreshold = 5;
-
-  Miner(int id):m_iGoldCarried(0),
-	            m_iMoneyInBank(0),
-                m_iThirst(0),
-                m_iFatigue(0),
-                BaseGameEntity(id)
-                            
+  Miner(int id):m_Location(shack),
+                          m_iGoldCarried(0),
+                          m_iMoneyInBank(0),
+                          m_iThirst(0),
+                          m_iFatigue(0),
+                          BaseGameEntity(id)
+                               
   {
-	 ChangeLocation(shack);
-
     //set up state machine
     m_pStateMachine = new StateMachine<Miner>(this);
     
@@ -83,12 +86,15 @@ public:
 
   
   //-------------------------------------------------------------accessors
+  location_type Location()const{return m_Location;}
+  void          ChangeLocation(location_type loc){m_Location=loc;}
+    
   int           GoldCarried()const{return m_iGoldCarried;}
   void          SetGoldCarried(int val){m_iGoldCarried = val;}
   void          AddToGoldCarried(int val);
   bool          PocketsFull()const{return m_iGoldCarried >= MaxNuggets;}
 
-  bool          Fatigued()const { return m_iFatigue > TirednessThreshold; };
+  bool          Fatigued()const;
   void          DecreaseFatigue(){m_iFatigue -= 1;}
   void          IncreaseFatigue(){m_iFatigue += 1;}
 
@@ -96,7 +102,7 @@ public:
   void          SetWealth(int val){m_iMoneyInBank = val;}
   void          AddToWealth(int val);
 
-  bool          Thirsty()const { return m_iThirst > ThirstLevel; };
+  bool          Thirsty()const; 
   void          BuyAndDrinkAWhiskey(){m_iThirst = 0; m_iMoneyInBank-=2;}
 
 };

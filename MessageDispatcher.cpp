@@ -23,9 +23,9 @@ extern std::ofstream os;
 
 MessageDispatcher* MessageDispatcher::Instance()
 {
-	static MessageDispatcher instance;
+  static MessageDispatcher instance;
 
-	return &instance;
+  return &instance;
 }
 
 
@@ -34,13 +34,13 @@ MessageDispatcher* MessageDispatcher::Instance()
 //  see description in header
 //------------------------------------------------------------------------
 void MessageDispatcher::Discharge(BaseGameEntity* pReceiver,
-	const Telegram& telegram)
+                                  const Telegram& telegram)
 {
-	if (!pReceiver->HandleMessage(telegram))
-	{
-		//telegram could not be handled
-		cout << "Message not handled";
-	}
+  if (!pReceiver->HandleMessage(telegram))
+  {
+    //telegram could not be handled
+    cout << "Message not handled";
+  }
 }
 
 //---------------------------- DispatchMessage ---------------------------
@@ -50,77 +50,54 @@ void MessageDispatcher::Discharge(BaseGameEntity* pReceiver,
 //  in the message queue to be dispatched at the correct time
 //------------------------------------------------------------------------
 void MessageDispatcher::DispatchMessage(double  delay,
-	int    sender,
-	int    receiver,
-	int    msg,
-	void*  ExtraInfo)
+                                        int    sender,
+                                        int    receiver,
+                                        int    msg,
+                                        void*  ExtraInfo)
 {
-	SetTextColor(BACKGROUND_RED | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+  SetTextColor(BACKGROUND_RED|FOREGROUND_RED|FOREGROUND_GREEN|FOREGROUND_BLUE);
 
-	//get pointers to the sender and receiver
-	BaseGameEntity* pSender = EntityMgr->GetEntityFromID(sender);
-	BaseGameEntity* pReceiver = EntityMgr->GetEntityFromID(receiver);
+  //get pointers to the sender and receiver
+  BaseGameEntity* pSender   = EntityMgr->GetEntityFromID(sender);
+  BaseGameEntity* pReceiver = EntityMgr->GetEntityFromID(receiver);
 
-	//make sure the receiver is valid
-	if (pReceiver == NULL)
-	{
-		cout << "\nWarning! No Receiver with ID of " << receiver << " found";
+  //make sure the receiver is valid
+  if (pReceiver == NULL)
+  {
+    cout << "\nWarning! No Receiver with ID of " << receiver << " found";
 
-		return;
-	}
+    return;
+  }
+  
+  //create the telegram
+  Telegram telegram(0, sender, receiver, msg, ExtraInfo);
+  
+  //if there is no delay, route telegram immediately                       
+  if (delay <= 0.0f)                                                        
+  {
+    cout << "\nInstant telegram dispatched at time: " << Clock->GetCurrentTime()
+         << " by " << GetNameOfEntity(pSender->ID()) << " for " << GetNameOfEntity(pReceiver->ID()) 
+         << ". Msg is "<< MsgToStr(msg);
 
-	//create the telegram
-	Telegram telegram(0, sender, receiver, msg, ExtraInfo);
+    //send the telegram to the recipient
+    Discharge(pReceiver, telegram);
+  }
 
-	//if there is no delay, route telegram immediately                       
-	if (delay <= 0.0f)
-	{
-		cout << "\nInstant telegram dispatched at time: " << Clock->GetCurrentTime()
-			<< " by " << GetNameOfEntity(pSender->ID()) << " for " << GetNameOfEntity(pReceiver->ID())
-			<< ". Msg is " << MsgToStr(msg);
+  //else calculate the time when the telegram should be dispatched
+  else
+  {
+    double CurrentTime = Clock->GetCurrentTime(); 
 
-		//send the telegram to the recipient
-		Discharge(pReceiver, telegram);
-	}
+    telegram.DispatchTime = CurrentTime + delay;
 
-	//else calculate the time when the telegram should be dispatched
-	else
-	{
-		double CurrentTime = Clock->GetCurrentTime();
+    //and put it in the queue
+    PriorityQ.insert(telegram);   
 
-		telegram.DispatchTime = CurrentTime + delay;
-
-		//and put it in the queue
-		PriorityQ.insert(telegram);
-
-		cout << "\nDelayed telegram from " << GetNameOfEntity(pSender->ID()) << " recorded at time "
-			<< Clock->GetCurrentTime() << " for " << GetNameOfEntity(pReceiver->ID())
-			<< ". Msg is " << MsgToStr(msg);
-
-	}
-}
-
-void MessageDispatcher::DispatchMessageToLocation(double  delay,
-	int    sender,
-	location_type    location,
-	int    msg,
-	void*  ExtraInfo)
-{
-	//get pointers to the sender and receiver
-	BaseGameEntity* pSender = EntityMgr->GetEntityFromID(sender);
-
-	std::vector<int> entities = EntityMgr->GetAllEntitiesAtLocation(location);
-
-	//self-messaging is not allowed
-	auto senderIndex = std::find(entities.begin(), entities.end(), sender);
-
-	if (senderIndex != entities.end()) {
-		entities.erase(senderIndex);
-	}
-
-	for (auto it = entities.begin(); it != entities.end(); ++it) {
-		DispatchMessage(delay, sender, *it, msg, ExtraInfo);
-	}
+    cout << "\nDelayed telegram from " << GetNameOfEntity(pSender->ID()) << " recorded at time " 
+            << Clock->GetCurrentTime() << " for " << GetNameOfEntity(pReceiver->ID())
+            << ". Msg is "<< MsgToStr(msg);
+            
+  }
 }
 
 

@@ -7,8 +7,6 @@ enum message_type
 {
   Msg_HiHoneyImHome,
   Msg_StewReady,
-  
-  Msg_BringItOn
 };
 
 
@@ -23,10 +21,6 @@ inline std::string MsgToStr(int msg)
   case Msg_StewReady:
     
     return "StewReady";
-
-  case Msg_BringItOn:
-
-	  return "Bring it on !";
 
   default:
 

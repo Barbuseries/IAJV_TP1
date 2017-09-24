@@ -15,7 +15,6 @@
 #include <set>
 
 
-#include "Locations.h"
 #include "misc/ConsoleUtils.h"
 #include "messaging/Telegram.h"
 
@@ -61,14 +60,6 @@ public:
                        int    receiver,
                        int    msg,
                        void*  ExtraInfo);
-
-  //send a message to all agents (except the sender) in the given location.
-  //NOTE: To minimize typing, just calls DispatchMessage on each entity in the location.
-  void DispatchMessageToLocation(double delay,
-								 int sender,
-								 location_type location,
-							     int msg,
-							     void *ExtraInfo);
 
   //send out any delayed messages. This method is called each time through   
   //the main game loop.
