@@ -215,20 +215,20 @@ void CookStew::Exit(MinersWife* wife)
 
 bool CookStew::OnMessage(MinersWife* wife, const Telegram& msg)
 {
-	Output* output = new Output(0);
-
 	switch (msg.Msg)
 	{
 	case Msg_StewReady:
 	{
-		cout << "\nMessage received by " << GetNameOfEntity(wife->ID()) <<
-			" at time: " << Clock->GetCurrentTime();
+		{
+			Output output;
 
-		output->ChangeEntity(ent_Elsa);
+			cout << "\nMessage received by " << GetNameOfEntity(wife->ID()) <<
+				" at time: " << Clock->GetCurrentTime();
 
-		cout << "\n" << GetNameOfEntity(wife->ID()) << ": StewReady! Lets eat";
+			output.ChangeEntity(ent_Elsa);
 
-		delete output;
+			cout << "\n" << GetNameOfEntity(wife->ID()) << ": StewReady! Lets eat";
+		}
 
 		//let hubby know the stew is ready
 		Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY,

@@ -223,21 +223,20 @@ void GoHomeAndSleepTilRested::Exit(Miner* pMiner)
 
 bool GoHomeAndSleepTilRested::OnMessage(Miner* pMiner, const Telegram& msg)
 {
-	Output* output = new Output(0);
-
 	switch (msg.Msg)
 	{
-	case Msg_StewReady:
+		case Msg_StewReady:
+		{
+			Output output;
 
-		cout << "\nMessage handled by " << GetNameOfEntity(pMiner->ID())
-			<< " at time: " << Clock->GetCurrentTime();
+			cout << "\nMessage handled by " << GetNameOfEntity(pMiner->ID())
+				<< " at time: " << Clock->GetCurrentTime();
 
-		output->ChangeEntity(ent_Miner_Bob);
-																		
-		cout << "\n" << GetNameOfEntity(pMiner->ID())
-			<< ": Okay Hun, ahm a comin'!";
+			output.ChangeEntity(ent_Miner_Bob);
 
-		delete output;
+			cout << "\n" << GetNameOfEntity(pMiner->ID())
+				<< ": Okay Hun, ahm a comin'!";
+		}
 
 		pMiner->GetFSM()->ChangeState(EatStew::Instance());
 
@@ -335,47 +334,3 @@ bool EatStew::OnMessage(Miner* pMiner, const Telegram& msg)
 	//send msg to global message handler
 	return false;
 }
-
-
-/*
-// template to remove
-#include <mutex>
-
-class Output {
-private:
-	static std::mutex mutex;
-
-public:
-	Output(int id = 0) { SetTextColor(EntityColor(id)); mutex.lock() };
-	void ChangeColor(int color) { SetTextColor(color); };
-	void ChangeEntity(int id) { SetTextColor(EntityColor(id); };
-	~Output() { mutex.unlock(); }
-};
-
-
-bool GoHomeAndSleepTilRested::OnMessage(Miner* pMiner, const Telegram& msg)
-{
-	Output output();
-
-	switch (msg.Msg)
-	{
-	case Msg_StewReady:
-
-		cout << "\nMessage handled by " << GetNameOfEntity(pMiner->ID())
-			<< " at time: " << Clock->GetCurrentTime();
-
-		output->ChangeColor(pMiner->id);
-
-		cout << "\n" << GetNameOfEntity(pMiner->ID())
-			<< ": Okay Hun, ahm a comin'!";
-
-		pMiner->GetFSM()->ChangeState(EatStew::Instance());
-
-		return true;
-
-	}//end switch
-
-	return false; //send message to global message handler
-}
-
-*/
