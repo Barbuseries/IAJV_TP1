@@ -1,6 +1,7 @@
 #ifndef STATEUTILS_H
 #define STATEUTILS_H
 
+// Create a global state state_name associated to the entity class entity_name
 #define ENTITY_GLOBAL_STATE(state_name, entity_name)  class state_name : public State<entity_name> \
 	{																	\
 	private:															\
@@ -20,6 +21,7 @@
 		virtual bool OnMessage(entity_name* entity, const Telegram& msg); \
 	}
 
+// Create a state state_name associated to the entity class entity_name
 #define ENTITY_STATE(state_name, entity_name) class state_name : public State<entity_name> \
 	{																	\
 	private:															\
