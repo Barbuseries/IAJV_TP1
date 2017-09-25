@@ -33,8 +33,7 @@ void WifesGlobalState::Execute(MinersWife* wife)
 {
 	//1 in 10 chance of needing the bathroom (provided she is not already
 	//in the bathroom)
-	if ((RandFloat() < 0.1) &&
-		!wife->GetFSM()->isInState(*VisitBathroom::Instance()))
+	if ((doubleRand() < 0.1) && !wife->GetFSM()->isInState(*VisitBathroom::Instance()))
 	{
 		wife->GetFSM()->ChangeState(VisitBathroom::Instance());
 	}
@@ -42,7 +41,7 @@ void WifesGlobalState::Execute(MinersWife* wife)
 
 bool WifesGlobalState::OnMessage(MinersWife* wife, const Telegram& msg)
 {
-	Output* output = new Output(0);
+	Output* output = new Output;
 
 	switch (msg.Msg)
 	{
@@ -90,7 +89,7 @@ void DoHouseWork::Execute(MinersWife* wife)
 {
 	Output output(ent_Elsa);
 
-	switch (RandInt(0, 2))
+	switch (intRand(0, 2))
 	{
 	case 0:
 
@@ -141,11 +140,12 @@ void VisitBathroom::Enter(MinersWife* wife)
 
 void VisitBathroom::Execute(MinersWife* wife)
 {
-	{
-		Output output(ent_Elsa);
 
-		cout << "\n" << GetNameOfEntity(wife->ID()) << ": Ahhhhhh! Sweet relief!";
-	}
+	Output* output = new Output(ent_Elsa);
+
+	cout << "\n" << GetNameOfEntity(wife->ID()) << ": Ahhhhhh! Sweet relief!";
+
+	delete output;
 
 	wife->GetFSM()->RevertToPreviousState();
 }
@@ -215,7 +215,7 @@ void CookStew::Exit(MinersWife* wife)
 
 bool CookStew::OnMessage(MinersWife* wife, const Telegram& msg)
 {
-	Output* output = new Output(0);
+	Output* output = new Output;
 
 	switch (msg.Msg)
 	{

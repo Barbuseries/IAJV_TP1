@@ -11,7 +11,7 @@ private:
 	static std::mutex mtx;
 
 public:
-	Output(int id = 0) { 
+	Output(int id = -1) { 
 		mtx.lock();
 		SetTextColor(Color::EntityColor(id)); 
 	};

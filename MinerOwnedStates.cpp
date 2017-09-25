@@ -223,7 +223,7 @@ void GoHomeAndSleepTilRested::Exit(Miner* pMiner)
 
 bool GoHomeAndSleepTilRested::OnMessage(Miner* pMiner, const Telegram& msg)
 {
-	Output* output = new Output(0);
+	Output* output = new Output;
 
 	switch (msg.Msg)
 	{
