@@ -15,6 +15,6 @@ class Barman;
 #define BARMAN_STATE(state_name) ENTITY_STATE(state_name, Barman)
 
 BARMAN_STATE(ServeCustomers);
-//BARMAN_STATE(RefereeingAFight);
+BARMAN_STATE(RefereeingAFight);
 
 #endif

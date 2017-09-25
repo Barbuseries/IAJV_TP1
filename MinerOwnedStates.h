@@ -57,4 +57,6 @@ MINER_STATE(QuenchThirst);
 //------------------------------------------------------------------------
 MINER_STATE(EatStew);
 
+MINER_STATE(Fight);
+
 #endif

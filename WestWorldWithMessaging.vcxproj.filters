@@ -146,5 +146,8 @@
     <ClInclude Include="StateUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FightMove.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

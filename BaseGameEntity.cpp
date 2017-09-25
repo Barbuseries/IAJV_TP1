@@ -42,7 +42,7 @@ void BaseGameEntity::Run(int count, int sleepTime) {
 	{
 		Output output;
 
-		cout << "Entity " << GetNameOfEntity(this->ID()) << " has left this world...";
+		cout << "\nEntity " << GetNameOfEntity(this->ID()) << " has left this world...";
 	}
 
 	EntityMgr->RemoveEntity(this);

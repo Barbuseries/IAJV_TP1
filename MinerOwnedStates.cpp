@@ -2,11 +2,13 @@
 #include "fsm/State.h"
 #include "Miner.h"
 #include "DrinkTypes.h"
+#include "FightMove.h"
 #include "Locations.h"
 #include "messaging/Telegram.h"
 #include "MessageDispatcher.h"
 #include "MessageTypes.h"
 #include "Time/CrudeTimer.h"
+#include "misc/Utils.h"
 #include "EntityNames.h"
 
 #include "Output.h"
@@ -284,9 +286,6 @@ void QuenchThirst::Execute(Miner* pMiner)
 
 void QuenchThirst::Exit(Miner* pMiner)
 {
-	Output output(pMiner->ID());
-
-	cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Leaving the saloon, feelin' good";
 }
 
 
@@ -311,9 +310,31 @@ bool QuenchThirst::OnMessage(Miner* pMiner, const Telegram& msg)
 			}
 
 			pMiner->GetFSM()->ChangeState(EnterMineAndDigForNugget::Instance());
+
+			return true;
 		}
 
-		return true;
+		case Msg_BringItOn:
+		{
+			{
+				Output output;
+
+				cout << "\nMessage received by " << GetNameOfEntity(pMiner->ID()) <<
+					" at time: " << Clock->GetCurrentTime();
+			}
+
+			if (RandFloat() < 0.1) {
+				pMiner->GetFSM()->ChangeState(Fight::Instance());
+
+				Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY,
+					pMiner->ID(),
+					msg.Sender,
+					Msg_ImOn,
+					NO_ADDITIONAL_INFO);			
+			}
+
+			return true;
+		}
 
 	}//end switch
 
@@ -358,5 +379,100 @@ void EatStew::Exit(Miner* pMiner)
 bool EatStew::OnMessage(Miner* pMiner, const Telegram& msg)
 {
 	//send msg to global message handler
+	return false;
+}
+
+
+//------------------------------------------------------------------------Fight
+
+Fight* Fight::Instance()
+{
+	static Fight instance;
+
+	return &instance;
+}
+
+void Fight::Enter(Miner* pMiner)
+{
+	Output output(pMiner->ID());
+
+	cout << "\n" << GetNameOfEntity(pMiner->ID())
+	     << ": <INSERT FUNNY SENTENCE HERE>";
+}
+
+void Fight::Execute(Miner* pMiner)
+{
+}
+
+
+void Fight::Exit(Miner* pMiner)
+{
+}
+
+
+// TOOD: Win/Lose cases
+bool Fight::OnMessage(Miner* pMiner, const Telegram& msg)
+{
+	switch (msg.Msg)
+	{
+		case Msg_ChooseMove:
+		{
+			{
+				Output output;
+
+				cout << "\nMessage received by " << GetNameOfEntity(pMiner->ID()) <<
+					" at time: " << Clock->GetCurrentTime();
+			}
+
+			int move;
+			float r = RandFloat();
+
+			if (r < 0.33) {
+				move = FightMove::Rock;
+			}
+			else if (r < 0.66) {
+				move = FightMove::Paper;
+			}
+			else {
+				move = FightMove::Cisors;
+			}
+
+			Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY,
+				pMiner->ID(),
+				msg.Sender,
+				Msg_ChooseMove,
+				(void *) move);
+
+			return true;
+		}
+
+		case Msg_Win:
+		{
+			{
+				Output output;
+
+				cout << "\nMessage received by " << GetNameOfEntity(pMiner->ID()) <<
+					" at time: " << Clock->GetCurrentTime();
+			}
+
+			return true;
+		}
+
+		case Msg_Lose:
+		{
+			{
+				Output output;
+
+				cout << "\nMessage received by " << GetNameOfEntity(pMiner->ID()) <<
+					" at time: " << Clock->GetCurrentTime();
+			}
+
+			pMiner->GetFSM()->ChangeState(GoHomeAndSleepTilRested::Instance());
+
+			return true;
+		}
+
+	}//end switch
+
 	return false;
 }

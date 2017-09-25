@@ -14,8 +14,8 @@
 
 #include <thread>
 
-#define RUN_COUNT 10
-#define SLEEP_TIME 800
+#define RUN_COUNT 80
+#define SLEEP_TIME 100
 
 using namespace std;
 std::ofstream os;
@@ -74,9 +74,3 @@ int main()
 
 	return 0;
 }
-
-
-
-
-
-

@@ -111,6 +111,7 @@
       <BrowseInformation>true</BrowseInformation>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalOptions>/I ..\..\Common %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -164,6 +165,7 @@
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="EntityNames.h" />
     <ClInclude Include="Barman.h" />
+    <ClInclude Include="FightMove.h" />
     <ClInclude Include="Locations.h" />
     <ClInclude Include="MessageDispatcher.h" />
     <ClInclude Include="MessageTypes.h" />

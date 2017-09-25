@@ -16,7 +16,7 @@ class Drunkard;
 
 DRUNKARD_STATE(GoHomeAndSleepTilRested2);
 DRUNKARD_STATE(GoToSaloonAndDrink);
+DRUNKARD_STATE(DrunkardFight);
 //DRUNKARD_STATE(GoOutsideToSleep);
-//DRUNKARD_STATE(FindSomeoneToFight);
 
 #endif
