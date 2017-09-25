@@ -62,6 +62,16 @@ void MessageDispatcher::DispatchMessage(double  delay,
 {
 	//get pointers to the sender and receiver
 	BaseGameEntity* pSender = EntityMgr->GetEntityFromID(sender);
+
+	if (pSender == NULL)
+	{
+		Output output;
+
+		cout << "\nWarning! No Sender with ID of " << sender << " found";
+
+		return;
+	}
+
 	BaseGameEntity* pReceiver = EntityMgr->GetEntityFromID(receiver);
 
 	//make sure the receiver is valid
@@ -159,15 +169,23 @@ void MessageDispatcher::DispatchDelayedMessages()
     //find the recipient
     BaseGameEntity* pReceiver = EntityMgr->GetEntityFromID(telegram.Receiver);
 
-	{
+	if (!pReceiver) {
 		Output output;
 
-		cout << "\nQueued telegram ready for dispatch: Sent to "
-			<< GetNameOfEntity(pReceiver->ID()) << ". Msg is " << MsgToStr(telegram.Msg);
+		cout << "\nQueued telegram ready for dispatch: but receiver is not found!"
+			 << " Msg is " << MsgToStr(telegram.Msg);
 	}
+	else {
+		{
+			Output output;
 
-    //send the telegram to the recipient
-    Discharge(pReceiver, telegram);
+			cout << "\nQueued telegram ready for dispatch: Sent to "
+				<< GetNameOfEntity(pReceiver->ID()) << ". Msg is " << MsgToStr(telegram.Msg);
+		}
+
+		//send the telegram to the recipient
+		Discharge(pReceiver, telegram);
+	}
 
     //remove it from the queue
     PriorityQ.erase(PriorityQ.begin());
