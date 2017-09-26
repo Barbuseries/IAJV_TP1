@@ -2,6 +2,7 @@
 #include "EntityManager.h"
 #include "EntityNames.h"
 #include "Output.h"
+#include "misc/utils.h"
 #include <cassert>
 #include <iostream>
 using std::cout;
@@ -34,6 +35,10 @@ void BaseGameEntity::SetID(int val)
 }
 
 void BaseGameEntity::Run(int count, int sleepTime) {
+	//unique seed value for each entity
+	static int entitySeed = 0;
+	srand((unsigned int)time(NULL) + ++entitySeed);
+
 	for (int i = 0; i < count; ++i) {
 		this->Update();
 		Sleep(sleepTime);

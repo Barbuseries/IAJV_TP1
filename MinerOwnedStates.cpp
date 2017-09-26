@@ -295,7 +295,8 @@ bool QuenchThirst::OnMessage(Miner* pMiner, const Telegram& msg)
 	{
 		case Msg_DrinkReady:
 		{
-			pMiner->BuyAndDrinkAWhiskey();
+			pMiner->BuyWhiskey();
+			pMiner->DrinkWhiskey();
 
 			{
 				Output output;
@@ -323,7 +324,7 @@ bool QuenchThirst::OnMessage(Miner* pMiner, const Telegram& msg)
 					" at time: " << Clock->GetCurrentTime();
 			}
 
-			if (RandFloat() < 0.1) {
+			if (RandBool()) {
 				pMiner->GetFSM()->ChangeState(Fight::Instance());
 
 				Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY,
@@ -409,8 +410,6 @@ void Fight::Exit(Miner* pMiner)
 {
 }
 
-
-// TOOD: Win/Lose cases
 bool Fight::OnMessage(Miner* pMiner, const Telegram& msg)
 {
 	switch (msg.Msg)
@@ -424,17 +423,13 @@ bool Fight::OnMessage(Miner* pMiner, const Telegram& msg)
 					" at time: " << Clock->GetCurrentTime();
 			}
 
-			int move;
-			float r = RandFloat();
+			int move = RandInt(FightMove::Rock, FightMove::Cisors);
 
-			if (r < 0.33) {
-				move = FightMove::Rock;
-			}
-			else if (r < 0.66) {
-				move = FightMove::Paper;
-			}
-			else {
-				move = FightMove::Cisors;
+			{
+				Output output(pMiner->ID());
+
+				cout << "\n" << GetNameOfEntity(pMiner->ID())
+					 << ": *Plays " << FightMoveToStr(move) << "*";
 			}
 
 			Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY,
@@ -453,7 +448,16 @@ bool Fight::OnMessage(Miner* pMiner, const Telegram& msg)
 
 				cout << "\nMessage received by " << GetNameOfEntity(pMiner->ID()) <<
 					" at time: " << Clock->GetCurrentTime();
+
+				output.ChangeEntity(pMiner->ID());
+
+				cout << "\n" << GetNameOfEntity(pMiner->ID())
+					 << ": The taste of victory!";
 			}
+
+			pMiner->DrinkWhiskey();
+
+			pMiner->GetFSM()->ChangeState(GoHomeAndSleepTilRested::Instance());
 
 			return true;
 		}
@@ -465,9 +469,15 @@ bool Fight::OnMessage(Miner* pMiner, const Telegram& msg)
 
 				cout << "\nMessage received by " << GetNameOfEntity(pMiner->ID()) <<
 					" at time: " << Clock->GetCurrentTime();
+
+				output.ChangeEntity(pMiner->ID());
+
+				cout << "\n" << GetNameOfEntity(pMiner->ID())
+					<< ": " << GetNameOfEntity(ent_Elsa)
+					<< " ain't goin' to be happy 'bout that... Better go get some money!";
 			}
 
-			pMiner->GetFSM()->ChangeState(GoHomeAndSleepTilRested::Instance());
+			pMiner->GetFSM()->ChangeState(EnterMineAndDigForNugget::Instance());
 
 			return true;
 		}

@@ -96,9 +96,9 @@ public:
   void          SetWealth(int val){m_iMoneyInBank = val;}
   void          AddToWealth(int val);
 
-  bool          Thirsty()const { return m_iThirst > ThirstLevel; };
-  void          BuyAndDrinkAWhiskey(){m_iThirst = 0; m_iMoneyInBank-=2;}
-
+  bool          Thirsty()const { return m_iThirst > ThirstLevel; }
+  void			DrinkWhiskey() { m_iThirst = 0; }
+  void			BuyWhiskey() { m_iMoneyInBank -= 2; }
 };
 
 

@@ -143,8 +143,6 @@ void RefereeingAFight::Enter(Barman* pBarman)
 
 	cout << "\n" << GetNameOfEntity(pBarman->ID())
 		<< ": FIGHT! FIGHT! FIGHT!";
-
-	// TODO: Clear moves
 }
 
 
@@ -254,6 +252,8 @@ bool RefereeingAFight::OnMessage(Barman* pBarman, const Telegram& msg)
 							<< ": " << GetNameOfEntity(loser) << " lost! Get out of ma saloon, ya punk!";
 					 }
 
+					pBarman->GetFSM()->ChangeState(ServeCustomers::Instance());
+
 					Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY,
 						pBarman->ID(),
 						winner,
@@ -264,7 +264,7 @@ bool RefereeingAFight::OnMessage(Barman* pBarman, const Telegram& msg)
 						pBarman->ID(),
 						loser,
 						Msg_Lose,
-						NO_ADDITIONAL_INFO);				
+						NO_ADDITIONAL_INFO);
 				}
 			}
 

@@ -235,7 +235,7 @@ bool DrunkardFight::OnMessage(Drunkard* pDrunkard, const Telegram& msg)
 		}
 
 		int move;
-		float r = 0.3; // Ah'm drunk!
+		float r = 0.3f; // Ah'm drunk!
 
 		if (r < 0.33) {
 			move = FightMove::Rock;
@@ -263,7 +263,15 @@ bool DrunkardFight::OnMessage(Drunkard* pDrunkard, const Telegram& msg)
 
 			cout << "\nMessage received by " << GetNameOfEntity(pDrunkard->ID()) <<
 				" at time: " << Clock->GetCurrentTime();
+
+			output.ChangeEntity(pDrunkard->ID());
+
+			cout << "\n" << GetNameOfEntity(pDrunkard->ID())
+				<< ": Amateur!";
 		}
+
+
+		pDrunkard->GetFSM()->ChangeState(GoToSaloonAndDrink::Instance());
 
 		return true;
 	}
@@ -275,6 +283,11 @@ bool DrunkardFight::OnMessage(Drunkard* pDrunkard, const Telegram& msg)
 
 			cout << "\nMessage received by " << GetNameOfEntity(pDrunkard->ID()) <<
 				" at time: " << Clock->GetCurrentTime();
+
+			output.ChangeEntity(pDrunkard->ID());
+
+			cout << "\n" << GetNameOfEntity(pDrunkard->ID())
+				<< ": Hey! Ya were s'pose to play cisors...";
 		}
 
 		pDrunkard->GetFSM()->ChangeState(GoHomeAndSleepTilRested2::Instance());

@@ -14,8 +14,8 @@
 
 #include <thread>
 
-#define RUN_COUNT 80
-#define SLEEP_TIME 100
+#define RUN_COUNT 30
+#define SLEEP_TIME 800
 
 using namespace std;
 std::ofstream os;
@@ -53,7 +53,7 @@ int main()
 	thread clay(&Drunkard::Run, Clay, RUN_COUNT, SLEEP_TIME);
 	thread barman(&Barman::Run, TheBarman, RUN_COUNT, SLEEP_TIME);
 
-	thread messages(&MessageDispatcher::Run, Dispatch, SLEEP_TIME);
+	thread messages(&MessageDispatcher::Run, Dispatch, SLEEP_TIME * 0.1);
 
 	bob.join();
 	elsa.join();
