@@ -137,57 +137,57 @@ bool GoToSaloonAndDrink::OnMessage(Drunkard* pDrunkard, const Telegram& msg)
 {
 	switch (msg.Msg)
 	{
-		case Msg_DrinkReady:
+	case Msg_DrinkReady:
+	{
 		{
-			{
-				Output output;
+			Output output;
 
-				cout << "\nMessage received by " << GetNameOfEntity(pDrunkard->ID()) <<
-					" at time: " << Clock->GetCurrentTime();
+			cout << "\nMessage received by " << GetNameOfEntity(pDrunkard->ID()) <<
+				" at time: " << Clock->GetCurrentTime();
 
-				output.ChangeEntity(pDrunkard->ID());
+			output.ChangeEntity(pDrunkard->ID());
 
-				cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": " << "Nothin's better than a beer!";
+			cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": " << "Nothin's better than a beer!";
 
-			}
-
-			pDrunkard->DrinkBeer();
-			pDrunkard->IncreaseFatigue();
-
-			// It's a drunkard, after all
-			ASK_FOR_BEER(1);
-
-			return true;
 		}
 
-		case Msg_ImOn:
+		pDrunkard->DrinkBeer();
+		pDrunkard->IncreaseFatigue();
+
+		// It's a drunkard, after all
+		ASK_FOR_BEER(1);
+
+		return true;
+	}
+
+	case Msg_ImOn:
+	{
 		{
-			{
-				Output output;
+			Output output;
 
-				cout << "\nMessage received by " << GetNameOfEntity(pDrunkard->ID()) <<
-					" at time: " << Clock->GetCurrentTime();
+			cout << "\nMessage received by " << GetNameOfEntity(pDrunkard->ID()) <<
+				" at time: " << Clock->GetCurrentTime();
 
-				output.ChangeEntity(pDrunkard->ID());
+			output.ChangeEntity(pDrunkard->ID());
 
-				cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": " << "That's more like it!"
-					 << " Barman, watch this!";
-			}
-
-			int fight[2];
-			fight[0] = pDrunkard->ID();
-			fight[1] = msg.Sender;
-
-			pDrunkard->GetFSM()->ChangeState(DrunkardFight::Instance());
-
-			Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY,
-				pDrunkard->ID(),
-				ent_Barman,
-				Msg_RefereeFight,
-				(void *) fight);
-
-			return true;
+			cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": " << "That's more like it!"
+				<< " Barman, watch this!";
 		}
+
+		int fight[2];
+		fight[0] = pDrunkard->ID();
+		fight[1] = msg.Sender;
+
+		pDrunkard->GetFSM()->ChangeState(DrunkardFight::Instance());
+
+		Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY,
+			pDrunkard->ID(),
+			ent_Barman,
+			Msg_RefereeFight,
+			(void *)fight);
+
+		return true;
+	}
 
 	}//end switch
 

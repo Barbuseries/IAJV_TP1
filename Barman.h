@@ -28,8 +28,6 @@ private:
 	//an instance of the state machine class
 	StateMachine<Barman>*  m_pStateMachine;
 
-	location_type         m_Location;
-
 public:
 
 	Barman(int id) : BaseGameEntity(id)
@@ -55,12 +53,6 @@ public:
 
 
 	StateMachine<Barman>* GetFSM()const { return m_pStateMachine; }
-
-
-
-	//-------------------------------------------------------------accessors
-	location_type Location()const { return m_Location; }
-	void          ChangeLocation(location_type loc) { m_Location = loc; }
 };
 
 #endif
