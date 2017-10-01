@@ -1,6 +1,6 @@
 Membres de l'équipe:
   - XXX Florian (XXX)
-  - Guison Vianney (XXX)
+  - Guison Vianney (GUIV30069402)
   - Edorh François (EDOF19059507)
 
 Ajouts:
