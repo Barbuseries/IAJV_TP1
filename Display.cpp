@@ -5,7 +5,6 @@
 
 
 locationView* createWindow() {
-	//SDL_Event evenements = { 0 };
 	// Initialisation de la SDL
 	if (SDL_Init(SDL_INIT_VIDEO) < 0){
 		std::cout << "error with SDL initialisation : " << SDL_GetError() << std::endl;
@@ -19,18 +18,47 @@ locationView* createWindow() {
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
 	//display the location
-	locationView* locationViewList =createLocationViewList(renderer);
+	locationView* locationViewList = createLocationViewList(renderer);
 
 	return locationViewList;
 }
 
-void updateView(locationView* locationViewList, int count, int sleepTime) {
+void runDisplay(int sleepTime) {
+	locationView *locationViewList = createWindow();
 
-	for (int i = 0; i < count; ++i) {
+	int run = true;
+
+	while (run && EntityMgr->HasEntities()) {
+		SDL_Event event;
+
+		while (SDL_PollEvent(&event))
+		{
+			switch (event.type)
+			{
+			case SDL_QUIT: { run = false; } break;
+
+			case SDL_KEYDOWN:
+			{
+				switch (event.key.keysym.sym) {
+				case SDLK_ESCAPE: { run = false; } break;
+
+				default: break;
+				}
+			} break;
+
+			default: break;
+			}
+		}
+
 		for (int id = 0; id < MAX_LOCATION_INDEX; id++) {
 			locationViewList[id].updateDisplay();
 		}
-		Sleep(sleepTime);
+
+		if (locationViewList) {
+			SDL_RenderPresent(locationViewList[0].getRenderer());
+		}
+
+		SDL_Delay(sleepTime);
 	}
 }
 
@@ -87,9 +115,6 @@ void displayCharacter(SDL_Renderer* renderer, int entityId, position positionLoc
 	//create the body under the head
 	createRectangle(renderer, bodyPos, bodySize, bodyColor);
 	dispayText(renderer, bodyPos, nameDisplay, 10);
-
-	// Render the rect to the screen
-	SDL_RenderPresent(renderer);
 }
 
 locationView* createLocationViewList(SDL_Renderer* renderer) {
@@ -167,8 +192,6 @@ void createRectangle(SDL_Renderer* renderer, position pos, sizeObject size, SDL_
 	SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
 	// Render rect
 	SDL_RenderFillRect(renderer, &rectangle);
-	// Render the rect to the screen
-	SDL_RenderPresent(renderer);
 }
 
 void dispayText(SDL_Renderer* renderer, position pos, char* text, int fontSize) {
@@ -178,6 +201,9 @@ void dispayText(SDL_Renderer* renderer, position pos, char* text, int fontSize) 
 	SDL_Color White = { 0, 0, 0 };  // this is the color in rgb format, maxing out all would give you the color white, and it will be your text's color
 	SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Sans, text, White); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
 	SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage); //now you can convert it into a texture
+
+	TTF_CloseFont(Sans);
+	SDL_FreeSurface(surfaceMessage);
 	TTF_Quit();
 
 	int texW = 0;
@@ -189,5 +215,6 @@ void dispayText(SDL_Renderer* renderer, position pos, char* text, int fontSize) 
 	dstrect.y = pos.y; // controls the rect's y coordinte
 
 	SDL_RenderCopy(renderer, Message, NULL, &dstrect);
-	SDL_RenderPresent(renderer);
+
+	SDL_DestroyTexture(Message);
 }

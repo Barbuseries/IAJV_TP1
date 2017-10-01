@@ -17,6 +17,7 @@
 
 #define RUN_COUNT 30
 #define SLEEP_TIME 800
+#define FPS 60
 
 using namespace std;
 std::ofstream os;
@@ -27,9 +28,6 @@ int main()
 #ifdef TEXTOUTPUT
 	os.open("output.txt");
 #endif
-
-	//create the view
-	locationView* locationViewList = createWindow();
 	//seed random number generator
 	srand((unsigned)time(NULL));
 
@@ -57,7 +55,7 @@ int main()
 	thread barman(&Barman::Run, TheBarman, RUN_COUNT, SLEEP_TIME);
 
 	thread messages(&MessageDispatcher::Run, Dispatch, SLEEP_TIME * 0.1);
-	thread view(updateView, locationViewList, RUN_COUNT, SLEEP_TIME);
+	thread view(runDisplay, 1000.0f / FPS);
 
 	bob.join();
 	elsa.join();

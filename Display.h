@@ -27,7 +27,7 @@ locationView* createWindow();
 void createRectangle(SDL_Renderer* renderer, position pos, sizeObject size, SDL_Color color);
 void displayCharacter(SDL_Renderer* renderer, int entityId, position positionLocation, int positionOrder = 0);
 void dispayText(SDL_Renderer* renderer, position pos, char* text, int fontSize);
-void updateView(locationView* locationViewList, int count, int sleepTime);
+void runDisplay(int sleepTime);
 locationView* createLocationViewList(SDL_Renderer* renderer);
 void updateCharacterAtLocation(SDL_Renderer* renderer, position positionLocation, enum location_type location);
 
@@ -66,6 +66,8 @@ class locationView {
 		position getPosition() {
 			return pos;
 		}
+
+		SDL_Renderer *getRenderer() { return renderer; };
 
 		void updateDisplay() {
 			createRectangle(renderer, pos, size, colorLocation);
