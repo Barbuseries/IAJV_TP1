@@ -57,6 +57,11 @@ MINER_STATE(QuenchThirst);
 //------------------------------------------------------------------------
 MINER_STATE(EatStew);
 
+//------------------------------------------------------------------------
+//
+//  miner fights an opponent in a deadly battle and goes home if he wins.
+//  He goes back to the mine otherwhise.
+//------------------------------------------------------------------------
 MINER_STATE(Fight);
 
 #endif

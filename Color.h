@@ -8,7 +8,7 @@
 class Color
 {
 public:
-	// This function return the color code associated to a given game object
+	// This function return the color code associated with a given game object
 	static int EntityColor(int EntityID);
 };
 

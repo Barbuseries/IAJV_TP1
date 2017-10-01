@@ -14,7 +14,18 @@ class Barman;
 
 #define BARMAN_STATE(state_name) ENTITY_STATE(state_name, Barman)
 
+//------------------------------------------------------------------------
+//
+//  In this state, the barman serve custormers their drink.
+//  If a fight breaks out, he starts refereeing it.
+//------------------------------------------------------------------------
 BARMAN_STATE(ServeCustomers);
+
+//------------------------------------------------------------------------
+//
+//  In this state, the barman is refereeing a fight. Once it is over,
+//  he goes back to serve customers.
+//------------------------------------------------------------------------
 BARMAN_STATE(RefereeingAFight);
 
 #endif

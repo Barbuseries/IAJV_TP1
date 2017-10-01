@@ -63,66 +63,67 @@ bool ServeCustomers::OnMessage(Barman* pBarman, const Telegram& msg)
 {
 	switch (msg.Msg)
 	{
-	case Msg_AskForDrink:
-	{
-		int drink = (int)(msg.ExtraInfo);
-
+		case Msg_AskForDrink:
 		{
-			Output output;
+			int drink = (int)(msg.ExtraInfo);
 
-			cout << "\nMessage received by " << GetNameOfEntity(pBarman->ID()) <<
-				" at time: " << Clock->GetCurrentTime();
+			{
+				Output output;
 
-			output.ChangeEntity(pBarman->ID());
+				cout << "\nMessage received by " << GetNameOfEntity(pBarman->ID()) <<
+					" at time: " << Clock->GetCurrentTime();
 
-			cout << "\n" << GetNameOfEntity(pBarman->ID())
-				<< ": A " << DrinkToStr(drink) << " for "
-				<< GetNameOfEntity(msg.Sender) << ". Got it!";
+				output.ChangeEntity(pBarman->ID());
+
+				cout << "\n" << GetNameOfEntity(pBarman->ID())
+					<< ": A " << DrinkToStr(drink) << " for "
+					<< GetNameOfEntity(msg.Sender) << ". Got it!";
+			}
+
+			//let customer know the drink is ready
+			Dispatch->DispatchMessage(0.2,
+				pBarman->ID(),
+				msg.Sender,
+				Msg_DrinkReady,
+				NO_ADDITIONAL_INFO);
+
+			return true;
 		}
 
-		//let customer know the drink is ready
-		Dispatch->DispatchMessage(0.2,
-			pBarman->ID(),
-			msg.Sender,
-			Msg_DrinkReady,
-			NO_ADDITIONAL_INFO);
-
-		return true;
-	}
-
-	case Msg_RefereeFight:
-	{
-		int *fight = (int *)msg.ExtraInfo;
-
+		case Msg_RefereeFight:
 		{
-			Output output;
+			// Array with [fighter_1, fighter_2]
+			int *fight = (int *)msg.ExtraInfo;
 
-			cout << "\nMessage received by " << GetNameOfEntity(pBarman->ID()) <<
-				" at time: " << Clock->GetCurrentTime();
+			{
+				Output output;
 
-			output.ChangeEntity(pBarman->ID());
+				cout << "\nMessage received by " << GetNameOfEntity(pBarman->ID()) <<
+					" at time: " << Clock->GetCurrentTime();
 
-			cout << "\n" << GetNameOfEntity(pBarman->ID())
-				<< ": Fight between " << GetNameOfEntity(fight[0]) << " and "
-				<< GetNameOfEntity(fight[1]) << "!";
+				output.ChangeEntity(pBarman->ID());
+
+				cout << "\n" << GetNameOfEntity(pBarman->ID())
+					<< ": Fight between " << GetNameOfEntity(fight[0]) << " and "
+					<< GetNameOfEntity(fight[1]) << "!";
+			}
+
+			pBarman->GetFSM()->ChangeState(RefereeingAFight::Instance());
+
+			Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY,
+				pBarman->ID(),
+				fight[0],
+				Msg_ChooseMove,
+				NO_ADDITIONAL_INFO);
+
+			Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY,
+				pBarman->ID(),
+				fight[1],
+				Msg_ChooseMove,
+				NO_ADDITIONAL_INFO);
+
+			return true;
 		}
-
-		pBarman->GetFSM()->ChangeState(RefereeingAFight::Instance());
-
-		Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY,
-			pBarman->ID(),
-			fight[0],
-			Msg_ChooseMove,
-			NO_ADDITIONAL_INFO);
-
-		Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY,
-			pBarman->ID(),
-			fight[1],
-			Msg_ChooseMove,
-			NO_ADDITIONAL_INFO);
-
-		return true;
-	}
 
 	}//end switch
 
@@ -163,27 +164,32 @@ void RefereeingAFight::Exit(Barman* pBarman)
 
 bool RefereeingAFight::OnMessage(Barman* pBarman, const Telegram& msg)
 {
+	// This is just a quick and dirty hack to not have to create members inside Barman.
+	// FIXME/IMPORTANT: If you want to use this state across multiple agents,
+	//                  remove the line below and adapt the code accordingly.
 	static int oldMove = -1, oldSender;
 
 	switch (msg.Msg)
 	{
-	case Msg_AskForDrink:
-	{
+		case Msg_AskForDrink:
 		{
-			Output output;
+			{
+				Output output;
 
-			cout << "\nMessage received by " << GetNameOfEntity(pBarman->ID()) <<
-				" at time: " << Clock->GetCurrentTime();
+				cout << "\nMessage received by " << GetNameOfEntity(pBarman->ID()) <<
+					" at time: " << Clock->GetCurrentTime();
 
-			output.ChangeEntity(pBarman->ID());
+				output.ChangeEntity(pBarman->ID());
 
-			cout << "\n" << GetNameOfEntity(pBarman->ID())
-				<< ": Not now, bar's closed!";
-		}
+				cout << "\n" << GetNameOfEntity(pBarman->ID())
+					<< ": Not now, bar's closed!";
+			}
 
 		return true;
 	}
 
+	// To minimize the number of messages, we just reuse Msg_ChooseMove.
+	// But it could be another message such as Msg_MoveChoosen or something.
 	case Msg_ChooseMove:
 	{
 		{
@@ -191,12 +197,11 @@ bool RefereeingAFight::OnMessage(Barman* pBarman, const Telegram& msg)
 
 			cout << "\nMessage received by " << GetNameOfEntity(pBarman->ID()) <<
 				" at time: " << Clock->GetCurrentTime();
-
-			output.ChangeEntity(pBarman->ID());
 		}
 
 		int move = (int)(msg.ExtraInfo);
 
+		// First fighter to respond
 		if (oldMove == -1) {
 			oldMove = move;
 			oldSender = msg.Sender;
@@ -265,11 +270,11 @@ bool RefereeingAFight::OnMessage(Barman* pBarman, const Telegram& msg)
 					loser,
 					Msg_Lose,
 					NO_ADDITIONAL_INFO);
+				}
 			}
-		}
 
-		return true;
-	}
+			return true;
+		}
 	}//end switch
 
 	return false;

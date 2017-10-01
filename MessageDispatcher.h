@@ -74,6 +74,9 @@ public:
   //the main game loop.
   void DispatchDelayedMessages();
 
+  //this is intended to be run on a separate thread.
+  //Dispatches delayed messages until no more entities are present.
+  //sleepTime is the delay between two dispatches.
   void Run(int sleepTime);
 };
 

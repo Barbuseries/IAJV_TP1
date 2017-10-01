@@ -6,6 +6,12 @@
 
 #include <mutex> 
 
+// This is a helper class to make the console coloration thread-safe
+// Usage: 
+// {
+//    Output(<EntityId>);
+//    cout << ...;
+// }
 class Output {
 private:
 	static std::mutex mtx;

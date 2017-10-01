@@ -4,7 +4,7 @@
 
 enum location_type
 {
-  in_the_middle_of_nowhere,
+  in_the_middle_of_nowhere, // NOTE: This is an invalid location, btw!
 
   shack,
   goldmine,

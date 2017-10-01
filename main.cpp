@@ -64,6 +64,7 @@ int main()
 
 	messages.join();
 	view.join();
+
 	//tidy up
 	delete Bob;
 	delete Elsa;
