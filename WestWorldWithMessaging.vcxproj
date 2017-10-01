@@ -72,7 +72,7 @@
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <AdditionalOptions>/I ..\..\Common %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/I ..\..\Common /I SDL\include /I SDL_ttf\include %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -85,6 +85,7 @@
       <ProgramDatabaseFile>.\Debug/WestWorldWithMessaging.pdb</ProgramDatabaseFile>
       <SubSystem>Console</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalDependencies>SDL2.lib;SDL2_ttf.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -135,6 +136,7 @@
     <ClCompile Include="BarmanOwnedStates.cpp" />
     <ClCompile Include="BaseGameEntity.cpp" />
     <ClCompile Include="Color.cpp" />
+    <ClCompile Include="Display.cpp" />
     <ClCompile Include="Drunkard.cpp" />
     <ClCompile Include="DrunkardOwnedStates.cpp" />
     <ClCompile Include="EntityManager.cpp" />
@@ -158,6 +160,7 @@
     <ClInclude Include="..\..\Common\utils.h" />
     <ClInclude Include="BarmanOwnedStates.h" />
     <ClInclude Include="BaseGameEntity.h" />
+    <ClInclude Include="Display.h" />
     <ClInclude Include="DrinkTypes.h" />
     <ClInclude Include="Drunkard.h" />
     <ClInclude Include="DrunkardOwnedStates.h" />
@@ -175,6 +178,11 @@
     <ClInclude Include="MinersWifeOwnedStates.h" />
     <ClInclude Include="Output.h" />
     <ClInclude Include="StateUtils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="SDL2.lib" />
+    <Library Include="SDL2main.lib" />
+    <Library Include="SDL2_ttf.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

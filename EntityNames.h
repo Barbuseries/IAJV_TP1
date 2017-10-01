@@ -11,6 +11,8 @@ enum
   ent_Elsa,
   ent_Drunkard_Clay,
   ent_Barman,
+
+  MAX_ENTITY_INDEX
 };
 
 inline std::string GetNameOfEntity(int n)

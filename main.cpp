@@ -12,6 +12,7 @@
 #include "misc/ConsoleUtils.h"
 #include "EntityNames.h"
 
+#include "Display.h"
 #include <thread>
 
 #define RUN_COUNT 30
@@ -27,6 +28,8 @@ int main()
 	os.open("output.txt");
 #endif
 
+	//create the view
+	locationView* locationViewList = createWindow();
 	//seed random number generator
 	srand((unsigned)time(NULL));
 
@@ -54,6 +57,7 @@ int main()
 	thread barman(&Barman::Run, TheBarman, RUN_COUNT, SLEEP_TIME);
 
 	thread messages(&MessageDispatcher::Run, Dispatch, SLEEP_TIME * 0.1);
+	thread view(updateView, locationViewList, RUN_COUNT, SLEEP_TIME);
 
 	bob.join();
 	elsa.join();
@@ -61,7 +65,7 @@ int main()
 	barman.join();
 
 	messages.join();
-
+	view.join();
 	//tidy up
 	delete Bob;
 	delete Elsa;

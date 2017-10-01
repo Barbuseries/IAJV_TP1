@@ -10,8 +10,9 @@ enum location_type
   goldmine,
   bank,
   saloon,
+  drunkard_shack,
 
-  drunkard_shack
+  MAX_LOCATION_INDEX
 };
 
 
