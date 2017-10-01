@@ -22,3 +22,11 @@ Ajouts:
     - Ajout d'une méthode pour envoyer un message à toutes les entités dans une "location"
 
 *: Nouvelle entité
+
+NOTE:
+- Les images (screenshot et machines d'états) sont dans le dossier 'img'.
+- Le projet a été configuré avec la hierarchie suivante en tête:
+  |-> Common
+  |-> <Project>
+   |-> <projet>.sln
+- Visual Studio 2017 a été utilisé

@@ -72,7 +72,7 @@
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <AdditionalOptions>/I ..\..\Common /I SDL\include /I SDL_ttf\include </AdditionalOptions>
+      <AdditionalOptions>/I ..\Common /I SDL\include /I SDL_ttf\include </AdditionalOptions>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -112,7 +112,7 @@
       <BrowseInformation>true</BrowseInformation>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalOptions>/I ..\..\Common /I SDL\include /I SDL_ttf\include </AdditionalOptions>
+      <AdditionalOptions>/I ..\Common /I SDL\include /I SDL_ttf\include </AdditionalOptions>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -131,7 +131,7 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Common\Time\CrudeTimer.cpp" />
+    <ClCompile Include="..\Common\Time\CrudeTimer.cpp" />
     <ClCompile Include="Barman.cpp" />
     <ClCompile Include="BarmanOwnedStates.cpp" />
     <ClCompile Include="BaseGameEntity.cpp" />
@@ -149,15 +149,15 @@
     <ClCompile Include="Output.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Common\2D\SVector2D.h" />
-    <ClInclude Include="..\..\Common\ConsoleUtils.h" />
-    <ClInclude Include="..\..\Common\FSM\State.h" />
-    <ClInclude Include="..\..\Common\FSM\StateMachine.h" />
-    <ClInclude Include="..\..\Common\Messaging\Telegram.h" />
-    <ClInclude Include="..\..\Common\misc\ConsoleUtils.h" />
-    <ClInclude Include="..\..\Common\misc\utils.h" />
-    <ClInclude Include="..\..\Common\Time\CrudeTimer.h" />
-    <ClInclude Include="..\..\Common\utils.h" />
+    <ClInclude Include="..\Common\2D\SVector2D.h" />
+    <ClInclude Include="..\Common\ConsoleUtils.h" />
+    <ClInclude Include="..\Common\FSM\State.h" />
+    <ClInclude Include="..\Common\FSM\StateMachine.h" />
+    <ClInclude Include="..\Common\Messaging\Telegram.h" />
+    <ClInclude Include="..\Common\misc\ConsoleUtils.h" />
+    <ClInclude Include="..\Common\misc\utils.h" />
+    <ClInclude Include="..\Common\Time\CrudeTimer.h" />
+    <ClInclude Include="..\Common\utils.h" />
     <ClInclude Include="BarmanOwnedStates.h" />
     <ClInclude Include="BaseGameEntity.h" />
     <ClInclude Include="Display.h" />
