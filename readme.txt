@@ -1,5 +1,5 @@
 Membres de l'équipe:
-  - XXX Florian (XXX)
+  - Desrousseaux Florian (DESF28039508)
   - Guison Vianney (GUIV30069402)
   - Edorh François (EDOF19059507)
 
@@ -13,7 +13,7 @@ Ajouts:
     - Consomme de la bière sans modération
     - Essaye de se battre lorsqu'il est ivre
   - Miner:
-    - Peut se battre si il est provoqué
+    - Peut se battre s'il est provoqué
   - BaseGameEntity:
     - Ajout de "location" et des méthodes associées
   - EntityManager:
