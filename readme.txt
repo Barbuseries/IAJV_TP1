@@ -6,10 +6,10 @@ Membres de l'équipe:
 Ajouts:
   - Affichage graphique avec SDL2
   - Multi-threading (entités, messages, affichage)
-  - Barman:
+  - *Barman:
     - Sert les verres
     - Arbitre les matchs
-  - Drunkard:
+  - *Drunkard:
     - Consomme de la bière sans modération
     - Essaye de se battre lorsqu'il est ivre
   - Miner:
@@ -20,3 +20,5 @@ Ajouts:
     - Ajout d'une méthode pour récupérer les entités dans une "location"
   - MessageDispatcher:
     - Ajout d'une méthode pour envoyer un message à toutes les entités dans une "location"
+
+*: Nouvelle entité
